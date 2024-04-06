@@ -4,6 +4,7 @@ import com.admazsshipping.fretes.entities.enums.EnumTipoEndereco;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 
 @Entity
 //@Table(name = "tb_destino")
@@ -12,6 +13,9 @@ public class Destino extends Endereco{
 
 	
 	private static final long serialVersionUID = 1L;
+	
+	@OneToOne(mappedBy = "tb_endereco")
+	private Frete frete;
 
 	public Destino() {
 		super();
@@ -30,6 +34,15 @@ public class Destino extends Endereco{
 	public void setTipoEndereco() {
 		//this.tipo
 		this.tipoEndereco = EnumTipoEndereco.DESTINO;
+	}
+	
+	public Frete getFrete() {
+		return frete;
+	}
+
+
+	public void setFrete(Frete frete) {
+		this.frete = frete;
 	}
 	
 

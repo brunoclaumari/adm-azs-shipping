@@ -37,7 +37,8 @@ public abstract class Endereco implements Serializable{
 	
 	private Integer numero;
 	
-	protected EnumTipoEndereco tipoEndereco;
+	protected EnumTipoEndereco tipoEndereco;	
+
 
 	public Endereco() {		
 	}
@@ -124,9 +125,6 @@ public abstract class Endereco implements Serializable{
 		Endereco other = (Endereco) obj;
 		return Objects.equals(id, other.id);
 	}
-
-
-	
 		
 	
 
