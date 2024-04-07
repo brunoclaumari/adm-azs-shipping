@@ -1,10 +1,12 @@
 package com.admazsshipping.fretes.entities;
 
 import com.admazsshipping.fretes.entities.enums.EnumTipoEndereco;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 
 @Entity
 //@Table(name = "tb_destino")
@@ -14,7 +16,9 @@ public class Destino extends Endereco{
 	
 	private static final long serialVersionUID = 1L;
 	
-	@OneToOne(mappedBy = "tb_endereco")
+	@JsonIgnore
+	@Transient
+	@OneToOne(mappedBy = "destino")
 	private Frete frete;
 
 	public Destino() {
