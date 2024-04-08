@@ -3,8 +3,6 @@ package com.admazsshipping.fretes.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +21,7 @@ public class ClienteService {
 	private List<FieldMessage> listaErros;
 
 	@Autowired
-	private ClienteRepository repository;
-	
+	private ClienteRepository repository;	
 
 	
 	@Transactional
@@ -41,9 +38,8 @@ public class ClienteService {
 		return retorno;
 	}
 	
-	public boolean isValid(Cliente clienteInsert) {
+	public boolean isValid(Cliente clienteInsert) {		
 		
-		//List<FieldMessage> list = new ArrayList<>();
 		listaErros = new ArrayList<>();
 		
 		// Coloque aqui seus testes de validação, acrescentando objetos FieldMessage à lista
@@ -61,35 +57,6 @@ public class ClienteService {
 		return listaErros.isEmpty();
 	}
 
-//	@Transactional
-//	public MovieDTO update(Long id, MovieDTO dto) {
-//		try {
-//			Movie entity = repository.getOne(id);
-//			copyDtoToEntity(dto, entity);
-//			entity = repository.save(entity);
-//			return new MovieDTO(entity);
-//
-//		} catch (EntityNotFoundException e) {
-//			throw new ResourceNotFoundException("Id not found: " + id);
-//		}
-//
-//	}
-
-	// Único sem Transactional, pois tem que capturar uma exceção e o transactional
-	// não deixaria
-//	public void delete(Long id) {
-//		String message = "";
-//		try {
-//			repository.deleteById(id);
-//		} catch (EmptyResultDataAccessException e) {
-//			message = "Id not found: " + id;
-//			logger.error(message);
-//			throw new ResourceNotFoundException(message);
-//		} catch (DataIntegrityViolationException e) {
-//			message = "Integrity database Violation!";
-//			throw new DatabaseException(message);
-//		}	
-//	}
 	
 
 }

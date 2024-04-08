@@ -2,11 +2,7 @@ package com.admazsshipping.fretes.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-
-import com.admazsshipping.fretes.dtos.CargaGeralDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -22,14 +18,9 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 
-
-
-
-//@MappedSuperclass
 @Entity(name = "tb_frete")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="tipo_carga", 
@@ -130,7 +121,7 @@ public abstract class Frete<T extends Carga> implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Frete other = (Frete) obj;
+		Frete<?> other = (Frete<?>) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

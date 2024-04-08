@@ -33,8 +33,7 @@ public class Cliente implements Serializable{
 	
 	private String telefone;
 	
-	private EnumTipoCarga tipoCarga;
-	
+	private EnumTipoCarga tipoCarga;	
 	
 
 	public Cliente() {		
@@ -50,9 +49,6 @@ public class Cliente implements Serializable{
 		this.telefone = telefone;
 		this.tipoCarga = tipoCarga;
 	}
-	
-	
-
 
 	public Long getId() {
 		return id;
@@ -131,9 +127,6 @@ public class Cliente implements Serializable{
 		Cliente other = (Cliente) obj;
 		return Objects.equals(documento, other.documento) && Objects.equals(id, other.id);
 	}
-	
-	
-	
 	
 
 }

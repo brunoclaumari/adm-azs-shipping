@@ -3,8 +3,6 @@ package com.admazsshipping.fretes.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,40 +54,23 @@ public class FreteService {
 
 	@Transactional(readOnly = true)
 	public Page<FreteDTO> findAllPaged(PageRequest pageRequest) {
-		// List<Category> categories = (categoryId == 0) ? null :
-		// Arrays.asList(categoryRepository.getOne(categoryId));
 
 		@SuppressWarnings("unchecked")
 		Page<Frete<?>> list = (Page<Frete<?>>) repository.findAll(pageRequest);
-		// Usando 'expressão lambda' para transferir Product para ProductDTO
-		// return list.map(x -> new ProductDTO(x));
+
 		return list.map(x-> new FreteDTO(x));
 	}
 
-//	@Transactional(readOnly = true)
-//	public Frete findById(Long id) {
-//
-//		Optional<Frete> obj = repository.findById(id);
-//
-//		Frete entity = obj.orElseThrow(() -> new ResourceNotFoundException(String.format("Frete solicitado não encontrado. Id: %s",id)));
-//
-//		return entity;
-//		//return new MovieDTO(entity, entity.getReviews());
-//	}
+	@Transactional(readOnly = true)
+	public FreteDTO findById(Long id) {		
+		
+		var obj = repository.findById(id);
 
-//	@Transactional
-//	public Frete insert(Frete entidade) {
-//		Frete retorno = new Frete();		
-//
-//		if (isValid(entidade)) {
-//			retorno = repository.save(entidade);
-//		} else {
-//			throw new DataIntegrityException("Dados inválidos. Verifique os erros!", listaErros);
-//			//throw new ResourceNotFoundException("Cliente");
-//		}
-//
-//		return retorno;
-//	}
+		Frete<?> entity = obj.orElseThrow(() -> new ResourceNotFoundException(String.format("Frete solicitado não encontrado. Id: %s",id)));
+
+		return new FreteDTO(entity);		
+	}
+
 
 	@Transactional
 	public FreteDTO insertGeneric(FreteDTO dto) {
@@ -100,20 +81,7 @@ public class FreteService {
 			if (isValid(dto)) {
 				EnumTipoCarga tipoCarga = dto.getCliente().getTipoCarga();
 				
-				switch (tipoCarga) {
-				case POR_CUBAGEM:
-					FreteCubagem entidadeCub = new FreteCubagem();
-					entidadeCub = RetornaFreteConformeTipoCarga((FreteCubagem)entidadeCub, tipoCarga, dto);
-					var objetoSalvo = repositoryFreteCubagem.save(entidadeCub);
-					retornoDTO = objetoSalvo.convert();
-					break;
-				case POR_PESO:
-					FretePeso entidadePeso = new FretePeso();
-					entidadePeso = RetornaFreteConformeTipoCarga((FretePeso)entidadePeso, tipoCarga, dto);
-					var objetoSalvo2 = repositoryFretePeso.save(entidadePeso);
-					retornoDTO = objetoSalvo2.convert();
-					break;
-				}					
+				retornoDTO = TrataDTOParaEntidade(tipoCarga, dto);				
 
 			} else {
 				throw new DataIntegrityException("Dados inválidos. Verifique os erros!", listaErros);				
@@ -127,28 +95,31 @@ public class FreteService {
 		return retornoDTO;
 	}
 
-//	@Transactional
-//	public Frete update(Long id, Frete entidade) {
-//		try {
-//			Frete retorno = repository.findById(id).get();
-//			entidade.setId(id);
-//			//copyDtoToEntity(dto, entity);
-//			retorno = repository.save(entidade);			
-//			
-//			return retorno;
-//			//return new MovieDTO(entity);
-//
-//		} 
-//		catch (EntityNotFoundException | NoSuchElementException e) {
-//			throw new ResourceNotFoundException("Id do frete não encontrado: " + id);
-//		}
-//	}
+	@Transactional
+	public FreteDTO update(Long id, FreteDTO freteDTO) {
+		FreteDTO retornoDTO = new FreteDTO();
+		try {
+			Frete<?> retorno = repository.findById(id).get();
+			freteDTO.setId(id);
+			if (isValid(freteDTO)) {
+				EnumTipoCarga tipoCarga = freteDTO.getCliente().getTipoCarga();
+				retornoDTO = TrataDTOParaEntidade(tipoCarga, freteDTO);				
+			}	
+			
+			return retornoDTO;			
+
+		} 
+		catch (EntityNotFoundException | NoSuchElementException e) {
+			throw new ResourceNotFoundException("Id do frete não encontrado: " + id);
+		}
+	}
 
 	public void delete(Long id) {
 		String message = "";
 		try {
-			//repository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
+			var encontrou = repository.findById(id);
+			repository.deleteById(encontrou.get().getId());
+		} catch (EmptyResultDataAccessException | NoSuchElementException e) {
 			message = "Id do frete não encontrado: " + id;
 			logger.error(message);
 			throw new ResourceNotFoundException(message);
@@ -177,8 +148,7 @@ public class FreteService {
 
 				listaErros.add(new FieldMessage("client_id",
 						String.format("Cliente com id '%s' não cadastrado. Verifique os dados enviados!", clienteId)));
-			}else {
-				//clienteParametro = clienteVerificado;
+			}else {				
 				frete.setCliente(clienteVerificado.get());
 			}
 			
@@ -193,17 +163,39 @@ public class FreteService {
 		} else
 			return new FretePeso();
 	}
-
+	
+	private FreteDTO TrataDTOParaEntidade(EnumTipoCarga tipoCarga, FreteDTO dto) {
+		
+		FreteDTO retornoDTO = new FreteDTO();
+		
+		switch (tipoCarga) {
+		case POR_CUBAGEM:
+			FreteCubagem entidadeCub = new FreteCubagem();
+			entidadeCub = RetornaFreteConformeTipoCarga((FreteCubagem)entidadeCub, tipoCarga, dto);
+			var objetoSalvo = repositoryFreteCubagem.save(entidadeCub);
+			retornoDTO = objetoSalvo.convert();
+			break;
+		case POR_PESO:
+			FretePeso entidadePeso = new FretePeso();
+			entidadePeso = RetornaFreteConformeTipoCarga((FretePeso)entidadePeso, tipoCarga, dto);
+			var objetoSalvo2 = repositoryFretePeso.save(entidadePeso);
+			retornoDTO = objetoSalvo2.convert();
+			break;
+		}
+		
+		return retornoDTO;
+		
+	}
 	
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	private 
 	<F extends Frete<?>, 
 	FF extends IConvertible<FreteDTO>, 
 	C extends Carga> 
 	FreteDTO InstanciaConformeTipoCarga(F entidade, EnumTipoCarga tipoCarga, FreteDTO dto){
 		FreteHelper<F, C, FreteDTO> helper = new FreteHelper<F, C, FreteDTO>();
-		//entidade = null;
+		
 		entidade.setId(dto.getId());
 		entidade.setCliente(dto.getCliente());
 		entidade.setDataEntrega(dto.getDataEntrega());
@@ -214,13 +206,10 @@ public class FreteService {
 		return ((FF)entidade).convert();
 	}
 
-	private 
-	<F extends Frete<?>, 
-	FF extends IConvertible<FreteDTO>, 
-	C extends Carga> 
+	private <F extends Frete<?>, FF extends IConvertible<FreteDTO>,	C extends Carga> 
 	F RetornaFreteConformeTipoCarga(F entidade, EnumTipoCarga tipoCarga, FreteDTO dto){
 		FreteHelper<F, C, FreteDTO> helper = new FreteHelper<F, C, FreteDTO>();
-		//entidade = null;
+		
 		entidade.setId(dto.getId());
 		entidade.setCliente(dto.getCliente());
 		entidade.setDataEntrega(dto.getDataEntrega());

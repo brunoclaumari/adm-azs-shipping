@@ -18,7 +18,7 @@ import jakarta.persistence.InheritanceType;
 @Entity(name="tb_endereco")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="tipo_endereco_disc", 
-  discriminatorType = DiscriminatorType.INTEGER)
+  discriminatorType = DiscriminatorType.STRING)
 public abstract class Endereco implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

@@ -6,17 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
 
 @Entity
-//@Table(name = "tb_origem")
-@DiscriminatorValue("1")
-public class Origem extends Endereco{
-
+@DiscriminatorValue("ORIGEM")
+public class Origem extends Endereco {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;	
 	
-	//@Transient
 	@JsonIgnore
 	@OneToOne(mappedBy = "origem")
 	private Frete<?> frete;

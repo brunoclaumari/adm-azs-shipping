@@ -1,7 +1,6 @@
 package com.admazsshipping.fretes.entities;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -90,11 +89,6 @@ public class Carga implements Serializable{
 			return false;
 		return true;
 	}
-
-	
-	
-	
-	
 	
 
 }

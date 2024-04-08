@@ -14,7 +14,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
 @Entity
-@DiscriminatorValue("P")
+@DiscriminatorValue("PESO")
 public class FretePeso extends Frete<CargaPeso> implements IConvertible<FreteDTO>{
 
 	/**
@@ -28,52 +28,22 @@ public class FretePeso extends Frete<CargaPeso> implements IConvertible<FreteDTO
 	joinColumns = @JoinColumn(name = "frete_id"), 
 	inverseJoinColumns = @JoinColumn(name = "peso_id"))
 	private Set<CargaPeso> cargas = new HashSet<>();
-
-//	@Override
-//	//@ManyToMany(targetEntity=Frete.class)
-//	@OneToMany(targetEntity = FretePeso.class)
-//	@JoinTable(name = "tb_frete_peso", 
-//	joinColumns = @JoinColumn(name = "frete_id"), 
-//	inverseJoinColumns = @JoinColumn(name = "peso_id"))
 	
-	
-
-	//@OneToMany(fetch = FetchType.LAZY)
 	@Override
 	public Set<CargaPeso> getCargas() {
-		// TODO Auto-generated method stub
+		
 		return this.cargas;
 	}
 
 	
-	public void setCargas(Set<CargaPeso> carga) {
-		// TODO Auto-generated method stub
-		
+	public void setCargas(Set<CargaPeso> carga) {		
+		this.cargas = carga;
 	}
 
 	@Override
-	public FreteDTO convert() {
-		// TODO Auto-generated method stub
+	public FreteDTO convert() {		
 		return new FreteDTO(this);
-	}
-	
-		
-//	@ManyToMany
-//	@JoinTable(name = "tb_frete_peso", 
-//	joinColumns = @JoinColumn(name = "frete_id"), 
-//	inverseJoinColumns = @JoinColumn(name = "peso_id"))
-//	Set<CargaPeso> cargas = new HashSet<>();
-//
-//
-//	public Set<CargaPeso> getCargas() {
-//		return cargas;
-//	}
-//
-//
-//	public void setCargas(Set<CargaPeso> cargas) {
-//		this.cargas = cargas;
-//	}
-	
+	}	
 	
 
 }

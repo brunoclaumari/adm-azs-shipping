@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
@@ -20,10 +19,7 @@ public class CargaCubagem extends Carga implements IConvertible<CargaGeralDTO>{
 
 
 	private static final long serialVersionUID = 1L;
-	
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)	
-//	private Long id;
+
 	
 	private Double largura;
 	
@@ -32,8 +28,7 @@ public class CargaCubagem extends Carga implements IConvertible<CargaGeralDTO>{
 	private Double altura;
 	
 	@JsonIgnore
-	@ManyToMany(mappedBy = "cargas", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	//@JoinColumn(name = "cubagem_id")
+	@ManyToMany(mappedBy = "cargas", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})	
 	private Set<FreteCubagem> freteCubagem = new HashSet<>();
 	
 	public CargaCubagem() {
@@ -47,11 +42,7 @@ public class CargaCubagem extends Carga implements IConvertible<CargaGeralDTO>{
 		this.altura = altura;
 	}
 
-	
 
-	/***
-	 * Largura em metros
-	 */
 	public Double getLargura() {
 		return largura;
 	}
@@ -86,9 +77,7 @@ public class CargaCubagem extends Carga implements IConvertible<CargaGeralDTO>{
 		// TODO Auto-generated method stub
 		return new CargaGeralDTO(this);
 	}	
-	
-	
-	
+		
 	
 
 }

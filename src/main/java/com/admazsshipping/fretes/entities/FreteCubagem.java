@@ -14,30 +14,23 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
 @Entity
-@DiscriminatorValue("C")
+@DiscriminatorValue("CUBAGEM")
 public class FreteCubagem extends Frete<CargaCubagem> implements IConvertible<FreteDTO>{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;	
-
+	private static final long serialVersionUID = 1L;
 	
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST})	
-	//@Cascade({ SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinTable(name = "tb_frete_cubagem", 
 	joinColumns = @JoinColumn(name = "frete_id"), 
 	inverseJoinColumns = @JoinColumn(name = "cubagem_id"))	
-	private Set<CargaCubagem> cargas = new HashSet<>();
-	
+	private Set<CargaCubagem> cargas = new HashSet<>();	
 	
 	@Override
 	public Set<CargaCubagem> getCargas() {
 		
 		return this.cargas;
 	}
-
-	//@Override
+	
 	public void setCargas(Set<CargaCubagem> carga) {		
 		this.cargas = carga;
 	}
@@ -46,8 +39,5 @@ public class FreteCubagem extends Frete<CargaCubagem> implements IConvertible<Fr
 	public FreteDTO convert() {		
 		return new FreteDTO(this);
 	}
-	
-	
-	
 
 }

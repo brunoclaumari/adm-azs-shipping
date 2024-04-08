@@ -6,18 +6,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
 
 @Entity
-//@Table(name = "tb_destino")
-@DiscriminatorValue("2")
-public class Destino extends Endereco{
-
+@DiscriminatorValue("DESTINO")
+public class Destino extends Endereco {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@JsonIgnore
-	//@Transient
+	@JsonIgnore	
 	@OneToOne(mappedBy = "destino")
 	private Frete<?> frete;
 
@@ -30,22 +26,21 @@ public class Destino extends Endereco{
 	public Destino(Long id, String nomeDonoEndereco, String enderecoCompleto, String cep, String documento,
 			Integer numero) {
 		super(id, nomeDonoEndereco, enderecoCompleto, cep, documento, numero, EnumTipoEndereco.DESTINO);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 
 	@Override
-	public void setTipoEndereco() {
-		//this.tipo
+	public void setTipoEndereco() {		
 		this.tipoEndereco = EnumTipoEndereco.DESTINO;
 	}
 	
-	public Frete getFrete() {
+	public Frete<?> getFrete() {
 		return frete;
 	}
 
 
-	public void setFrete(Frete frete) {
+	public void setFrete(Frete<?> frete) {
 		this.frete = frete;
 	}
 	
