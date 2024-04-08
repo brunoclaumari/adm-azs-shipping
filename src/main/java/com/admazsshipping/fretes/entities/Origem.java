@@ -16,10 +16,10 @@ public class Origem extends Endereco{
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Transient
+	//@Transient
 	@JsonIgnore
 	@OneToOne(mappedBy = "origem")
-	private Frete frete;
+	private Frete<?> frete;
 
 
 	public Origem() {
@@ -41,12 +41,12 @@ public class Origem extends Endereco{
 		this.tipoEndereco = EnumTipoEndereco.ORIGEM;
 	}
 	
-	public Frete getFrete() {
+	public Frete<?> getFrete() {
 		return frete;
 	}
 
 
-	public void setFrete(Frete frete) {
+	public void setFrete(Frete<?> frete) {
 		this.frete = frete;
 	}
 	

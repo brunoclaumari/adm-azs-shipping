@@ -17,9 +17,9 @@ public class Destino extends Endereco{
 	private static final long serialVersionUID = 1L;
 	
 	@JsonIgnore
-	@Transient
+	//@Transient
 	@OneToOne(mappedBy = "destino")
-	private Frete frete;
+	private Frete<?> frete;
 
 	public Destino() {
 		super();

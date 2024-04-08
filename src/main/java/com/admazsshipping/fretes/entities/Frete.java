@@ -2,27 +2,39 @@ package com.admazsshipping.fretes.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
+import com.admazsshipping.fretes.dtos.CargaGeralDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 
 
 
 
-@Entity
-@Table(name = "tb_frete")
-public class Frete implements Serializable{
+
+//@MappedSuperclass
+@Entity(name = "tb_frete")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="tipo_carga", 
+  discriminatorType = DiscriminatorType.STRING)
+public abstract class Frete<T extends Carga> implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -48,11 +60,12 @@ public class Frete implements Serializable{
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant dataEntrega;
 
-	public Frete(Long id, Origem origem, Destino destino, Instant dataEntrega) {		
+	public Frete(Long id, Cliente cliente, Origem origem, Destino destino, Instant dataEntrega) {		
 		this.id = id;
+		this.cliente = cliente;
 		this.origem = origem;
 		this.destino = destino;
-		this.dataEntrega = dataEntrega;
+		this.dataEntrega = dataEntrega;		
 	}
 
 	public Frete() {
@@ -99,9 +112,14 @@ public class Frete implements Serializable{
 		this.dataEntrega = dataEntrega;
 	}
 
+	public abstract Set<? extends Carga> getCargas();
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
 
 	@Override
@@ -113,18 +131,13 @@ public class Frete implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Frete other = (Frete) obj;
-		return Objects.equals(id, other.id);
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
-	
-	
-	
-//	private String enderecoOrigem;
-//	
-//	private String cepOrigem;
-//	
-//	private Integer numeroOrigem;
-	
-
 	
 	
 

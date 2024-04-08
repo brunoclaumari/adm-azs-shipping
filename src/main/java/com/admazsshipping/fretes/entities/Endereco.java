@@ -14,7 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 
-//@MappedSuperclass
+
 @Entity(name="tb_endereco")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="tipo_endereco_disc", 

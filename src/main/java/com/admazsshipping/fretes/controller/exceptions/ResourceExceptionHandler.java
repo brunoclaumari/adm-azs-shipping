@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.admazsshipping.fretes.personal_exceptions.ConstraintUniqueException;
 import com.admazsshipping.fretes.personal_exceptions.DataIntegrityException;
 import com.admazsshipping.fretes.personal_exceptions.DatabaseException;
+import com.admazsshipping.fretes.personal_exceptions.InesperedException;
 import com.admazsshipping.fretes.personal_exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -113,6 +114,21 @@ public class ResourceExceptionHandler {
 		err.setTimestamp(Instant.now());
 		err.setStatus(status.value());
 		err.setError("Database exception");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	//InesperedException
+	@ExceptionHandler(InesperedException.class)
+	public ResponseEntity<StandardError> erroInesperado(InesperedException e, HttpServletRequest request){
+		HttpStatus status=HttpStatus.BAD_REQUEST;//400
+		
+		StandardError err=new StandardError();
+		err.setTimestamp(Instant.now());
+		err.setStatus(status.value());
+		err.setError("Ocorreu um erro!");
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
 		

@@ -7,16 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.admazsshipping.fretes.dtos.FreteDTO;
 import com.admazsshipping.fretes.entities.Frete;
 import com.admazsshipping.fretes.services.FreteService;
 
@@ -32,35 +30,45 @@ public class FreteController {
 	private FreteService service;
 	
 	@GetMapping
-	public ResponseEntity<Page<Frete>> findAll(Pageable pageable) {
+	public ResponseEntity<Page<FreteDTO>> findAll(Pageable pageable) {
 		PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
-		Page<Frete> list = service.findAllPaged(pageRequest);		
+		Page<FreteDTO> list = service.findAllPaged(pageRequest);		
 		return ResponseEntity.ok().body(list);
 	}
 	
+//	@PostMapping
+//	public ResponseEntity<Frete> insert(@Valid @RequestBody Frete body) {
+//		body = service.insert(body);
+//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(body.getId()).toUri();
+//
+//		return ResponseEntity.created(uri).body(body);
+//	}
+	
 	@PostMapping
-	public ResponseEntity<Frete> insert(@Valid @RequestBody Frete body) {
-		body = service.insert(body);
+	public ResponseEntity<FreteDTO> insertGeneric(@Valid @RequestBody FreteDTO body) {
+		
+		body = service.insertGeneric(body);
+		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(body.getId()).toUri();
 
 		return ResponseEntity.created(uri).body(body);
 	}
 	
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<Frete> update(@PathVariable Long id,@Valid @RequestBody Frete body) {
-		body = service.update(id, body);
-
-		return ResponseEntity.ok().body(body);
-	}
-
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Frete> delete(@PathVariable Long id) {
-		service.delete(id);
-
-		return ResponseEntity.noContent().build();
-		// vai retornar 204 que é que deu certo e o corpo da
-		// resposta está vazio.
-	}
+//	@PutMapping(value = "/{id}")
+//	public ResponseEntity<Frete> update(@PathVariable Long id,@Valid @RequestBody Frete body) {
+//		body = service.update(id, body);
+//
+//		return ResponseEntity.ok().body(body);
+//	}
+//
+//	@DeleteMapping(value = "/{id}")
+//	public ResponseEntity<Frete> delete(@PathVariable Long id) {
+//		service.delete(id);
+//
+//		return ResponseEntity.noContent().build();
+//		// vai retornar 204 que é que deu certo e o corpo da
+//		// resposta está vazio.
+//	}
 	
 	
 //	@GetMapping(value = "/teste")
