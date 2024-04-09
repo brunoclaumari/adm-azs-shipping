@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.admazsshipping.fretes.controller.exceptions.FieldMessage;
-import com.admazsshipping.fretes.dtos.FreteDTO;
 import com.admazsshipping.fretes.entities.Cliente;
-import com.admazsshipping.fretes.entities.Frete;
 import com.admazsshipping.fretes.personal_exceptions.ConstraintUniqueException;
 import com.admazsshipping.fretes.repositories.ClienteRepository;
 
