@@ -19,11 +19,12 @@ services:
       dockerfile: ./Dockerfile
     environment:
       TZ: America/Sao_Paulo
+      SERVER.PORT: 8090
       SPRING.DATASOURCE.URL: jdbc:postgresql://frete-db:5432/db_frete_azship
       SPRING.DATASOURCE.USERNAME: postgres
       SPRING.DATASOURCE.PASSWORD: bruno28postgres
     ports:
-      - 8081:8080
+      - 8090:8090
     depends_on:
       - frete-db
     networks:
