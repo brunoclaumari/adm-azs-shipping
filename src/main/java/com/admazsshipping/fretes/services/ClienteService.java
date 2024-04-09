@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.admazsshipping.fretes.controller.exceptions.FieldMessage;
+import com.admazsshipping.fretes.dtos.FreteDTO;
 import com.admazsshipping.fretes.entities.Cliente;
+import com.admazsshipping.fretes.entities.Frete;
 import com.admazsshipping.fretes.personal_exceptions.ConstraintUniqueException;
 import com.admazsshipping.fretes.repositories.ClienteRepository;
 
@@ -22,6 +26,14 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository repository;	
+	
+	@Transactional(readOnly = true)
+	public Page<Cliente> findAllPaged(PageRequest pageRequest) {
+		
+		Page<Cliente> list = repository.findAll(pageRequest);
+
+		return list;
+	}
 
 	
 	@Transactional

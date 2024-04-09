@@ -9,6 +9,7 @@ import com.admazsshipping.fretes.services.utils.IConvertible;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -20,13 +21,12 @@ public class FretePeso extends Frete<CargaPeso> implements IConvertible<FreteDTO
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	
-//	@OneToMany(fetch = FetchType.LAZY)
+	private static final long serialVersionUID = 1L;	
+
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST})	
 	@JoinTable(name = "tb_frete_peso", 
-	joinColumns = @JoinColumn(name = "frete_id"), 
-	inverseJoinColumns = @JoinColumn(name = "peso_id"))
+	joinColumns = @JoinColumn(name = "frete_id", foreignKey = @ForeignKey(name="fk_peso_frete")), 
+	inverseJoinColumns = @JoinColumn(name = "peso_id", foreignKey = @ForeignKey(name="fk_peso")))
 	private Set<CargaPeso> cargas = new HashSet<>();
 	
 	@Override

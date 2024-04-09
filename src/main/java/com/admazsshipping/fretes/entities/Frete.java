@@ -40,12 +40,14 @@ public abstract class Frete<T extends Carga> implements Serializable{
 	private Cliente cliente;	
 	
 
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "origem_id", referencedColumnName = "id")
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "origem_id", 
+    referencedColumnName = "id", foreignKey = @ForeignKey(name="fk_origem_frete"))
 	private Origem origem;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "destino_id", referencedColumnName = "id")
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "destino_id", 
+    referencedColumnName = "id", foreignKey = @ForeignKey(name="fk_destino_frete"))
 	private Destino destino;
 	
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")

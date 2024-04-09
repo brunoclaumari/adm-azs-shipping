@@ -9,6 +9,7 @@ import com.admazsshipping.fretes.services.utils.IConvertible;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -21,8 +22,8 @@ public class FreteCubagem extends Frete<CargaCubagem> implements IConvertible<Fr
 	
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST})	
 	@JoinTable(name = "tb_frete_cubagem", 
-	joinColumns = @JoinColumn(name = "frete_id"), 
-	inverseJoinColumns = @JoinColumn(name = "cubagem_id"))	
+	joinColumns = @JoinColumn(name = "frete_id", foreignKey = @ForeignKey(name="fk_cubagem_frete")), 
+	inverseJoinColumns = @JoinColumn(name = "cubagem_id", foreignKey = @ForeignKey(name="fk_cubagem")))	
 	private Set<CargaCubagem> cargas = new HashSet<>();	
 	
 	@Override
