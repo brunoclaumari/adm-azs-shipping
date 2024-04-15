@@ -7,19 +7,21 @@ Projeto de cadastro para gestão de fretes, feito para um desafio de uma vaga de
 Cada cliente tem seu conjunto de propriedades que precisa ser armazenado. Por exemplo, para alguns
 clientes é importante armazenar Cubagem do frete mas não é importante armazenar o Peso.
 
-A aplicação deve disponibilizar uma API REST ou GraphQL com as seguintes operações:
-  ● Cadastrar Frete
-  ● Buscar Frete (a busca deve receber apenas um parâmetro que deve ser utilizado para buscar em todas as propriedades do frete, e deve ser paginada)
-  ● Atualizar dados do Frete
-  ● Remover Frete
+A aplicação deve disponibilizar uma API REST ou GraphQL com as seguintes operações:.
 
-# Modelagem
+* Cadastrar Frete
+* Buscar Frete (a busca deve receber apenas um parâmetro que deve ser utilizado para buscar em todas as propriedades do frete, e deve ser paginada)
+* Atualizar dados do Frete
+* Remover Frete
+
+# Modelagem (sujeito a alterações, como qualquer projeto hehehe)
 ## As classes iniciais que imaginei são as seguintes: 
 ```mermaid
 classDiagram
     Frete --> Cliente
     Frete --> Origem
     Frete --> Destino
+    Frete "1" --> "1..*" Carga
 
     Carga <|-- CargaCubagem
     Carga <|-- CargaPeso
@@ -68,9 +70,17 @@ Como não havia muitas informações sobre regra de negócio (não conheço muit
 * Spring web
 * Banco de dados H2 (persistência de dados em memória para testes)
 * PostgreSQL - SGBD mais robusto para persistência de dados da aplicação
-* Flyway - Para versionamento do banco de dados.
-  Como um histórico das alterações feitas no banco de dados do sistema, através de migrations. (não está ainda, será providenciado)
 * Docker
+* Swagger (ainda está faltando)
+* Flyway - Para versionamento do banco de dados.
+  Como um histórico das alterações feitas no banco de dados do sistema, através de migrations. (não está ainda, será providenciado) 
+
+# Melhorias futuras mapeadas
+
+* Implementar algum tipo de cálculo, de acordo com a carga e distância
+* Integração com api google maps, para obter distância em quilômetros entre origem e destino.
+* Definir um preço padrão de frete e o adicionar as variações pela distância.
+* Deploy em alguma plataforma de nuvem (Render - grátis, ou AWS - não grátis)
     
 
 
